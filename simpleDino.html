@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      margin: 20px;
+      height: 300px;
+      width: 600px;
+      border: black 2px solid;
+      background-color: rgba(0, 255, 255, 0.325);
+    }
+
+    .gameOver {
+      font-size: 5rem;
+      position: fixed;
+      text-align: center;
+      opacity: 0;
+    }
+
+    .jumper {
+      position: relative;
+      margin-top: 200px;
+      margin-left: 100px;
+      background-color: brown;
+      height: 100px;
+      width: 25px;
+
+    }
+    .mover {
+      height: 30px;
+      width: 30px;
+      background-color: blue;
+      position: absolute;
+      margin-left: 570px;
+      margin-top: -30px;
+      animation: moveToLeft 2s linear 0s infinite;
+    }
+
+    .animate {
+      animation: jumpUp 0.6s linear 0s;
+    }
+
+    @keyframes  moveToLeft {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-570px);
+      }
+    }
+
+    @keyframes jumpUp {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-80px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+
+  </style>
+</head>
+<body>
+  <div class="box">
+    <p class="gameOver">The Game is Over</p>
+    <div class="jumper"></div>
+    <div class="mover"></div>
+  </div>
+  <script>
+    const box = document.querySelector('.box');
+    const jumper = document.querySelector('.jumper');
+    const mover = document.querySelector('.mover');
+    const gameOver = document.querySelector('.gameOver');
+    function handleJump() {
+      jumper.classList.add('animate');
+      setTimeout(function() {
+        jumper.classList.remove('animate');
+        }, 800);
+    };
+
+    box.addEventListener('click', handleJump);
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === ' ') {
+        handleJump();
+    }});
+
+    function isGameOver() {
+      const rectMover =  mover.getBoundingClientRect();
+      const rectJumper = jumper.getBoundingClientRect();
+      /* console.log(rectJumper.y);
+      console.log(rectMover.x); */
+      if(rectMover.x > 90 && rectMover.x < 120) {
+        if(rectJumper.y > 185){
+          console.log("Game over");
+          clearInterval(gameOverInterval);
+          mover.classList.remove('mover');
+          jumper.classList.remove('jumper');
+          gameOver.style.opacity = 1;
+        }
+      }
+    };
+
+    const gameOverInterval = setInterval(isGameOver, 5);
+  </script>
+</body>
+</html>
